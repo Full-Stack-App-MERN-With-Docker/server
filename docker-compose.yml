@@ -10,7 +10,8 @@ services:
       - "3002:5000"
     env_file: .env
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
 
 
   mongo:
@@ -20,12 +21,19 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ademm
       MONGO_INITDB_ROOT_PASSWORD: ademm123
+    healthcheck:
+      test: mongosh --eval "db.adminCommand('ping')" -u ademm -p ademm123 --authenticationDatabase admin --quiet || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
   mongo-express:
     image: mongo-express
     container_name: mongo-express-container
-    depends_on: 
-    - mongo
+    depends_on:
+      mongo:
+        condition: service_healthy
     restart: always
     ports:
       - 8081:8081
