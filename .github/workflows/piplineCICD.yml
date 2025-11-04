@@ -29,6 +29,7 @@ jobs :
 
     deploy-to-VPS :
         runs-on: ubuntu-latest
+        needs: [build-and-push-docker-image]
         steps:
             - name: Deploy to VPS via SSH
               uses: appleboy/ssh-action@v1.0.3
