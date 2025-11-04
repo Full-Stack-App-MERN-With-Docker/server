@@ -32,3 +32,10 @@ app.use(cors());
 app.use("/user", require("./routes/user"));
 app.get("/", (_req, res) => res.send("OK"));
 app.listen(5000, () => console.log("Server is running on port 5000"));
+
+
+
+
+
+
+//app.use(cors(["http://localhost:3005/"]));
